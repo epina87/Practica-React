@@ -1,0 +1,46 @@
+header {
+  background-color: #34a853;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.logo {
+  width: 90px;
+  height: 60px;
+  background-image: url('../../../img/logo.png');
+  background-size: cover;
+  margin-right: 20px;
+}
+
+.texto {
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.active {
+  padding: 20px;
+  border: 5px solid white;
+  margin: 5px;
+  color: white;
+  text-align: center;
+}
+
+.active:hover {
+  padding: 20px;
+  border: 5px solid white;
+  margin: 5px;
+  color: rgb(10, 79, 10);
+  text-align: center;
+  background-color: bisque;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}

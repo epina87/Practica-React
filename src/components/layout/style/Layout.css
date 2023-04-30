@@ -1,0 +1,93 @@
+.newAdvert,
+.advertPage,
+.Adverts-Page-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 auto;
+  width: 1170px;
+
+  background-color: #ffffff;
+  box-shadow: 0 3px 13px 1px rgb(0 0 0/ 9%);
+}
+
+.Adverts-Page-Container li {
+  border-bottom: 1px solid rgb(0 0 0/ 9%);
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+fieldset {
+  margin: 0 50px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  text-align: left;
+}
+
+.Adverts-Page-Container div {
+  width: 100%;
+  /*display: flex;
+  justify-content: center;
+  align-items: center;*/
+}
+
+.Search-Container {
+  text-align: left;
+  margin-left: 50px;
+}
+.listAdverts li {
+  border-bottom: none;
+}
+
+.advertPageView {
+  display: flex;
+  justify-content: left;
+}
+.advertPageViewDate {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin-right: 20px;
+  padding: 30px;
+}
+
+.Search-Container fieldset {
+  width: 12rem;
+}
+
+.Confirm-Delete {
+  font-size: 25px;
+}
+
+img {
+  width: 600px;
+  height: 500px;
+}
+
+.firdt-ad {
+  font-size: 20px;
+  font-weight: bolder;
+  border: 20px solid rgb(20, 94, 7);
+  background-color: rgb(143, 221, 143);
+  padding: 40px;
+  color: rgb(53, 89, 53);
+}
+
+.firdt-ad:hover {
+
+    border: 20px solid rgb(141, 188, 133);
+    background-color: rgb(41, 103, 41);
+    color: rgb(24, 241, 129);
+
+  }
