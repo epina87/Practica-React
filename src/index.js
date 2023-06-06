@@ -5,7 +5,7 @@ import App from './App';
 import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
 
-import { AuthContextProvider } from './components/auth/context';
+// import { AuthContextProvider } from './components/auth/context';
 import configureStore from './store';
 import Root from './Root';
 
@@ -14,18 +14,15 @@ if (accessToken) {
   setAuthorizationHeader(accessToken);
 }
 
-const store = configureStore()
-
+const store = configureStore({ auth: !!accessToken });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Root store={store}>
-      <AuthContextProvider isInitiallyLogged={!!accessToken} >
-        <App/>
-      </AuthContextProvider>
+      {/* <AuthContextProvider isInitiallyLogged={!!accessToken}> */}
+        <App />
+      {/* </AuthContextProvider> */}
     </Root>
-
   </React.StrictMode>,
 );
-

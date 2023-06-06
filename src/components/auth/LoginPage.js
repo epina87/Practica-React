@@ -3,9 +3,12 @@ import { login } from './service';
 import './style/LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './context';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../store/actions';
 
 function LoginPage() {
-  const { onLogin } = useAuth();
+  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,6 +23,8 @@ function LoginPage() {
     setError(null);
   };
 
+  const onLogin = () => dispatch(authLogin())
+
   const [saveSession, setSaveSession] = useState(false);
 
   const handlechecked = event => {
@@ -29,6 +34,8 @@ function LoginPage() {
   const handleSubmit = async event => {
     event.preventDefault();
 
+    
+
     resetError();
 
     setIsLoading(true);
@@ -36,7 +43,7 @@ function LoginPage() {
       await login(credential, saveSession);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log("error",error);
       setIsLoading(false);
       setError(error);
       return;
