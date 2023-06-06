@@ -6,11 +6,14 @@ import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './components/auth/context';
+import configureStore from './store';
 
 const accessToken = storage.get('auth');
 if (accessToken) {
   setAuthorizationHeader(accessToken);
 }
+
+const store = configureStore()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
