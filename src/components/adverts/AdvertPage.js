@@ -1,38 +1,47 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Layout from '../layout/Layout';
 import { useEffect, useState } from 'react';
-import { deleteAdvert, getAdvert } from './service';
+//import { deleteAdvert } from './service';
 import '../layout/style/Button.css';
 import Loading from '../shared/Loading';
+import { useSelector } from 'react-redux';
+import { getAdvert } from '../../store/selectors';
 
 function AdvertPage() {
   const params = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [advert, setAdvert] = useState(null);
+  //const [error, setError] = useState(null);
+
+  
+  const advert = useSelector(state =>getAdvert(state,params.id))
+
+
+
+  //const [advert, setAdvert] = useState(null);
+
   const [delAd,setDelAd] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsLoading(true);
-    getAdvert(params.id)
-      .then(advert => {
-        setAdvert(advert);
-        setIsLoading(false);
+   useEffect(() => {
+     setIsLoading(true);
+//     getAdvert(params.id)
+//       .then(advert => {
+//         setAdvert(advert);
+         setIsLoading(false);
       })
-      .catch(error => setError(error));
-  }, [params.id]);
+//       .catch(error => setError(error));
+//   }, [params.id]);
 
-  if (error?.status === 404) {
-    return <Navigate to="/404" />;
-  }
+//   if (error?.status === 404) {
+//     return <Navigate to="/404" />;
+ //  }
 
   const handleDeleteAd = async event => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      await deleteAdvert(advert.id);
+//      await deleteAdvert(advert.id);
       setIsLoading(false);
       navigate('/adverts');
     } catch (error) {

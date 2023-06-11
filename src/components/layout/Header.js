@@ -19,21 +19,26 @@ const Header = () => {
     onLogout();
   };
 
-  const itsMe = async () => {
-    try {
-      await getMe();
-    } catch (error) {
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    }
-  };
+//   const itsMe = async () => {
+//     try {
+//       await getMe();
+//     } catch (error) {
+//       if (error.status === 401) {
+//         navigate('/login');
+//       }
+//     }
+//   };
+//   itsMe();
+
+  if (!isLogged){
+    navigate('/login');
+  }
 
   const goLogin = () => {
     navigate('/login');
   };
 
-  itsMe();
+
 
   return (
     <header>

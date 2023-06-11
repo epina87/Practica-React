@@ -1,62 +1,61 @@
 import { useEffect, useState } from 'react';
-import { getAdvertsList, getTags } from './service';
+
 import Layout from '../layout/Layout';
 import { Link, NavLink } from 'react-router-dom';
 import Loading from '../shared/Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { areAdvertsLoaded, getIsAdverts, getIsTags, getUi } from '../../store/selectors';
+import { advertsLoaded, tagsLoaded } from '../../store/actions';
+import Filters from './Filters';
 
 function AdvertsPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [adverts, setAdverts] = useState([]);
-  const [adOrigin, setAdOrigin] = useState([]);
+
+
+  const dispatch = useDispatch();
+
   const [query, setQuery] = useState('');
-  const [saleTipe, setSaleTipe] = useState();
+  const [saleType, setSaleType] = useState();
   const [saleName, setSaleName] = useState('todos');
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(Infinity);
-  const [tags, setTags] = useState();
+
   const [tagsSave, setTagsSave] = useState([]);
 
+  let adverts = useSelector(getIsAdverts);
+  let tags    = useSelector(getIsTags);
+  let isLoading = useSelector(areAdvertsLoaded)
+ 
+
+  
   useEffect(() => {
-    setIsLoading(true);
+    
+      dispatch(advertsLoaded(adverts));
+      dispatch(tagsLoaded(tags));
+   
+  }, [dispatch,adverts,tags]);
 
-    getAdvertsList().then(adverts => {
-      setAdverts(adverts);
-      setAdOrigin(adverts);
-      getTags().then(tags => {
-        setTags(tags);
-      });
-      setIsLoading(false);
-    });
-  }, []);
+  
 
-  let filterAdvert = adOrigin;
-
-
-  // Filters
-  filterAdvert = filterAdvert.filter(advert =>
-    (advert.name ?? '').toUpperCase().startsWith(query.toLocaleUpperCase()),
-  );
-
-  if (saleName !== 'todos') {
-    filterAdvert = filterAdvert.filter(advert => advert.sale === saleTipe);
-  }
+  let filterTags = tags;
+  let filterAdvert = adverts;
 
   if (priceMax === '') {
     setPriceMax(Infinity);
   }
-  filterAdvert = filterAdvert.filter(
-    advert => advert.price >= priceMin && advert.price <= priceMax,
-  );
 
-  if (tagsSave.length > 0) {
-    filterAdvert = filterAdvert.filter(({ tags }) =>
-      tags.some(tag => tagsSave.includes(tag)),
-    );
-  }
+  filterAdvert = Filters(
+    filterAdvert,
+    query,
+    saleName,
+    priceMax,
+    priceMin,
+    tagsSave,
+    saleType,
+  );
 
   const handleSearchTipeChange = event => {
     setSaleName(event.target.value !== 'todos' ? 'filtro' : 'todos');
-    setSaleTipe(event.target.value === 'compra' ? false : true);
+    setSaleType(event.target.value === 'compra' ? false : true);
   };
 
   const handleTagChange = event => {
@@ -73,9 +72,10 @@ function AdvertsPage() {
     }
   };
 
+
   return (
     <Layout title="Adverts Page">
-      {isLoading ? (
+      {!isLoading ? (
         <Loading />
       ) : (
         <div className="Adverts-Page-Container">
@@ -136,9 +136,9 @@ function AdvertsPage() {
                 <fieldset>
                   <legend>Tags:</legend>
 
-                  {!!tags?.length ? (
+                  {!!filterTags?.length ? (
                     <ul>
-                      {tags.map(tag => (
+                      {filterTags.map(tag => (
                         <li key={tag}>
                           <input
                             type="checkbox"

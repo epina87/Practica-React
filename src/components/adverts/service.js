@@ -26,6 +26,7 @@ export const deleteAdvert = advertId => {
 };
 
 export const getMe =()=>{
+    
     const url = "/api/auth/me"
     return client.get(url)
 }

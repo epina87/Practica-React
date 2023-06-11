@@ -2,28 +2,34 @@ import { useState } from 'react';
 import { login } from './service';
 import './style/LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './context';
-import { useDispatch } from 'react-redux';
-import { authLogin } from '../../store/actions';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  authLogin,
+  authLoginFailure,
+  authLoginRequest,
+  authLoginSuccess,
+  uiResetError,
+} from '../../store/actions';
+import { getUi } from '../../store/selectors';
 
 function LoginPage() {
   const dispatch = useDispatch();
-  
+
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoading, error } = useSelector(getUi);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+  //const [error, setError] = useState(null);
   const [credential, setCredentials] = useState({
     email: '',
     password: '',
   });
 
   const resetError = () => {
-    setError(null);
+    dispatch(uiResetError());
   };
-
-  const onLogin = () => dispatch(authLogin())
 
   const [saveSession, setSaveSession] = useState(false);
 
@@ -31,29 +37,12 @@ function LoginPage() {
     setSaveSession(event.target.checked);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit =  event => {
     event.preventDefault();
-
-    
-
-    resetError();
-
-    setIsLoading(true);
-    try {
-      await login(credential, saveSession);
-      setIsLoading(false);
-    } catch (error) {
-      console.log("error",error);
-      setIsLoading(false);
-      setError(error);
-      return;
-    }
-
-    onLogin(true);
-
-    const to = location.state?.from?.pathname || '/';
-
-    navigate(to);
+    dispatch(authLogin(credential, saveSession)).then(()=>{
+        const to = location.state?.from?.pathname || '/';
+        navigate(to);
+    }).catch(error => console.log(error))
   };
 
   const handleChange = event => {
@@ -106,7 +95,12 @@ function LoginPage() {
                 <input type="checkbox" onChange={handlechecked} /> you want to
                 save the session
               </p>
-              {error && <div className='error'> {error.message} </div>}
+              {error && (
+                <div className="error" onClick={resetError}>
+                  {' '}
+                  {error.message}{' '}
+                </div>
+              )}
             </form>
           </div>
         </div>

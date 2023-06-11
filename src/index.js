@@ -5,7 +5,6 @@ import App from './App';
 import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
 
-// import { AuthContextProvider } from './components/auth/context';
 import configureStore from './store';
 import Root from './Root';
 
@@ -20,9 +19,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Root store={store}>
-      {/* <AuthContextProvider isInitiallyLogged={!!accessToken}> */}
-        <App />
-      {/* </AuthContextProvider> */}
+      <App />
     </Root>
   </React.StrictMode>,
 );
