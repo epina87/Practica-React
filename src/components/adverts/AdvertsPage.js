@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import Layout from '../layout/Layout';
 import { Link, NavLink } from 'react-router-dom';
 import Loading from '../shared/Loading';

@@ -1,6 +1,7 @@
 import {
   ADVERTS_LOADED,
   ADVERTS_LOADED_SUCCESS,
+  ADVERT_LOADED_SUCCESS,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
@@ -39,10 +40,15 @@ export function adverts(state = defaultState.adverts, action) {
   switch (action.type) {
     case ADVERTS_LOADED_SUCCESS:
       return { areLoaded: true, data: action.payload };
+    case ADVERT_LOADED_SUCCESS:
+        
+        return { ...state, data: [action.payload] }; 
+
     default:
       return state;
   }
 }
+
 
 export function tags(state = defaultState.tags, action) {
   switch (action.type) {
