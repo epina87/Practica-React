@@ -1,11 +1,22 @@
 //import { getAdvertsList, getTags } from '../components/adverts/service';
 
-import { areAdvertsLoaded, areTagsLoaded, getAdvert } from './selectors';
 import {
-  ADVERTS_LOADED,
+  areAdvertsLoaded,
+  areTagsLoaded,
+  getAdvert,
+  getAdvertsNotDelete,
+} from './selectors';
+import {
+
   ADVERTS_LOADED_FAILURE,
   ADVERTS_LOADED_REQUEST,
   ADVERTS_LOADED_SUCCESS,
+  ADVERT_CREATED_FAILURE,
+  ADVERT_CREATED_REQUEST,
+  ADVERT_CREATED_SUCCESS,
+  ADVERT_DELETE_FAILURE,
+  ADVERT_DELETE_REQUEST,
+  ADVERT_DELETE_SUCCESS,
   ADVERT_LOADED_FAILURE,
   ADVERT_LOADED_REQUEST,
   ADVERT_LOADED_SUCCESS,
@@ -13,7 +24,7 @@ import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
-  TAGS_LOADED,
+
   TAGS_LOADED_FAILURE,
   TAGS_LOADED_REQUEST,
   TAGS_LOADED_SUCCESS,
@@ -87,17 +98,12 @@ export const advertsLoaded =
 export const advertLoad =
   advertId =>
   async (dispatch, getState, { adverts: advertsService }) => {
-    
-
-    const isLoaded = getAdvert(advertId)(getState())
-
+    const isLoaded = getAdvert(advertId)(getState());
 
     if (isLoaded) {
       return;
     }
 
-
-    
     dispatch(advertLoadedRequest());
     try {
       const advert = await advertsService.getAdvert(advertId);
@@ -157,4 +163,66 @@ export const tagsLoaded =
 
 export const uiResetError = () => ({
   type: UI_RESET_ERROR,
+});
+
+export const advertCreated =
+  advert =>
+  async (dispatch, _getState, { adverts: advertsService }) => {
+    dispatch(advertCreatedRequest());
+    try {
+      const createdAdvert = await advertsService.createAdvert(advert, {
+        headers: { 'content-type': 'multipart/form-data' },
+      });
+
+      dispatch(advertCreatedSuccess(createdAdvert));
+      return createdAdvert;
+    } catch (error) {
+      dispatch(advertCreatedFailure(error));
+      throw error;
+    }
+  };
+
+export const advertCreatedRequest = () => ({
+  type: ADVERT_CREATED_REQUEST,
+});
+
+export const advertCreatedSuccess = advert => ({
+  type: ADVERT_CREATED_SUCCESS,
+  payload: advert,
+});
+
+export const advertCreatedFailure = error => ({
+  type: ADVERT_CREATED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+export const advertDelete =
+  advertId =>
+  async (dispatch, getState, { adverts: advertsService }) => {
+    dispatch(advertDeleteRequest());
+    try {
+      await advertsService.deleteAdvert(advertId);
+      const adverts = getAdvertsNotDelete(advertId)(getState());
+
+      dispatch(advertDeleteSuccess(adverts));
+    } catch (error) {
+      dispatch(advertDeleteFailure(error));
+      throw error;
+    }
+  };
+
+export const advertDeleteRequest = () => ({
+  type: ADVERT_DELETE_REQUEST,
+});
+
+export const advertDeleteSuccess = advertId => ({
+  type: ADVERT_DELETE_SUCCESS,
+  payload: advertId,
+});
+
+export const advertDeleteFailure = error => ({
+  type: ADVERT_DELETE_FAILURE,
+  error: true,
+  payload: error,
 });

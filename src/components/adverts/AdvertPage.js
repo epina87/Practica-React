@@ -6,15 +6,16 @@ import '../layout/style/Button.css';
 import Loading from '../shared/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAdvert, getUi } from '../../store/selectors';
-import { advertLoad } from '../../store/actions';
+import { advertDelete, advertLoad } from '../../store/actions';
 
 function AdvertPage() {
   const { id:advertId } = useParams();
 
   const dispatch = useDispatch();
+  const {isLoading} = useSelector(getUi)
 
 
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
   //const [error, setError] = useState(null);
 
   const advert = useSelector(getAdvert(advertId));
@@ -26,16 +27,16 @@ function AdvertPage() {
 
 
   useEffect(() => {
-    setIsLoading(true);
+    //setIsLoading(true);
     dispatch(advertLoad(advertId)).catch(error => {
       if (error.status === 404) {
         return navigate('/404');
       }      
     });
-    setIsLoading(false);
+    //setIsLoading(false);
   }, [dispatch, navigate, advertId]);
 
-  console.log("Anuncion->",advert)
+//   console.log("Anuncion->",advert)
 
   
 
@@ -48,9 +49,11 @@ function AdvertPage() {
   const handleDeleteAd = async event => {
     event.preventDefault();
     try {
-      setIsLoading(true);
+        await dispatch(advertDelete(advert.id))
+
+      //setIsLoading(true);
       //      await deleteAdvert(advert.id);
-      setIsLoading(false);
+      //setIsLoading(false);
       navigate('/adverts');
     } catch (error) {
       <Navigate to="/404" />;

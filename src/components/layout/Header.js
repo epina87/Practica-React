@@ -13,22 +13,23 @@ const Header = () => {
 
   const onLogout = () => dispatch(authLogout());
 
+
   const navigate = useNavigate();
   const handleLogoutClick = async () => {
     await logout();
     onLogout();
   };
 
-//   const itsMe = async () => {
-//     try {
-//       await getMe();
-//     } catch (error) {
-//       if (error.status === 401) {
-//         navigate('/login');
-//       }
-//     }
-//   };
-//   itsMe();
+  const itsMe = async () => {
+    try {
+      await getMe();
+    } catch (error) {
+      if (error.status === 401) {
+        navigate('/login');
+      }
+    }
+  };
+  itsMe();
 
   if (!isLogged){
     navigate('/login');

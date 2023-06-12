@@ -1,14 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import Layout from '../layout/Layout';
-import { createAdvert, getTags } from './service';
+//import { getTags } from './service';
 import '../layout/style/Button.css';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../shared/Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { advertCreated, tagsLoaded } from '../../store/actions';
+import { getIsTags, getUi } from '../../store/selectors';
 
 function NewAdvertPage() {
+  const dispatch = useDispatch();
+  const {isLoading} = useSelector(getUi)
+  let tags    = useSelector(getIsTags);
+
   const navigate = useNavigate();
 
-  const [tags, setTags] = useState();
+  //const [tags, setTags] = useState();
   const [tagsSave, setTagsSave] = useState([]);
   const [saleSave, setSaleSave] = useState('');
   const [saleName, setSaleName] = useState('');
@@ -16,15 +23,16 @@ function NewAdvertPage() {
   const [priceSave, setPriceSave] = useState();
 
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [isLoading, setIsloading] = useState(false);
+  
 
   const file = useRef();
 
-  useEffect(() => {
-    getTags().then(tags => {
-      setTags(tags);
-    });
-  }, []);
+//   useEffect(() => {
+//     //dispatch(tagsLoaded(tags))
+//     // getTags().then(tags => {
+//     //   setTags(tags);
+//     // });
+//   }, [dispatch,tags]);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -37,13 +45,10 @@ function NewAdvertPage() {
       photo: file.current,
     };
 
-
     try {
-      setIsloading(true);
-      const advert = await createAdvert(data, {
-        headers: { 'content-type': 'multipart/form-data' },
-      });
-      setIsloading(false);
+       
+    const advert = await dispatch(advertCreated(data))
+
       navigate(`/adverts/${advert.id}`);
     } catch (error) {
       if (error.status === 401) {
@@ -86,6 +91,7 @@ function NewAdvertPage() {
   };
 
   useEffect(() => {
+    dispatch(tagsLoaded(tags))
     if (
       !!nameSave?.length === true &&
       !!priceSave > 0 === true &&
@@ -97,7 +103,7 @@ function NewAdvertPage() {
     } else {
       setButtonDisabled(true);
     }
-  }, [nameSave, priceSave, tagsSave, saleName]);
+  }, [nameSave, priceSave, tagsSave, saleName,dispatch,tags,isLoading]);
 
   const btnClass = !buttonDisabled ? 'btn' : 'btnDisabled';
 
@@ -107,7 +113,7 @@ function NewAdvertPage() {
     Page To New Advert"
     >
       {isLoading ? (
-        <Loading/>
+        <Loading />
       ) : (
         <div className="newAdvert">
           <form id="createUser" onSubmit={handleSubmit}>
@@ -158,8 +164,6 @@ function NewAdvertPage() {
 
               {!!tags?.length ? (
                 <ul>
-
-
                   {tags.map(tag => (
                     <li key={tag}>
                       <input

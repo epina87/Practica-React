@@ -23,9 +23,10 @@ export const getAdvert = advertId => state => state.adverts.data.find(advert => 
     
 // }
 
+export const getAdvertsNotDelete = advertId => state => state.adverts.data.filter(advert => advert.id !== advertId)
+
 
 export const getUi = state => state.ui
-
 
 
 export const areAdvertsLoaded = state => state.adverts.areLoaded;
