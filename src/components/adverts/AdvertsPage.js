@@ -9,7 +9,6 @@ import Filters from './Filters';
 
 function AdvertsPage() {
 
-
   const dispatch = useDispatch();
 
   const [query, setQuery] = useState('');

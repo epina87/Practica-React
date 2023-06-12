@@ -34,7 +34,7 @@ function NewAdvertPage() {
 //     // });
 //   }, [dispatch,tags]);
 
-  const handleSubmit = async event => {
+  const handleSubmit =  event => {
     event.preventDefault();
 
     const data = {
@@ -45,18 +45,11 @@ function NewAdvertPage() {
       photo: file.current,
     };
 
-    try {
-       
-    const advert = await dispatch(advertCreated(data))
 
-      navigate(`/adverts/${advert.id}`);
-    } catch (error) {
-      if (error.status === 401) {
-        navigate('/login');
-      } else {
-        navigate('/404');
-      }
-    }
+       
+     dispatch(advertCreated(data))
+
+
   };
 
   const handleTagChange = event => {

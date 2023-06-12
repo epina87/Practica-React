@@ -1,14 +1,8 @@
 import { useState } from 'react';
-import { login } from './service';
 import './style/LoginPage.css';
-import { useLocation, useNavigate } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {
   authLogin,
-  authLoginFailure,
-  authLoginRequest,
-  authLoginSuccess,
   uiResetError,
 } from '../../store/actions';
 import { getUi } from '../../store/selectors';
@@ -16,12 +10,8 @@ import { getUi } from '../../store/selectors';
 function LoginPage() {
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-  const location = useLocation();
   const { isLoading, error } = useSelector(getUi);
 
-  // const [isLoading, setIsLoading] = useState(false);
-  //const [error, setError] = useState(null);
   const [credential, setCredentials] = useState({
     email: '',
     password: '',
@@ -39,10 +29,7 @@ function LoginPage() {
 
   const handleSubmit =  event => {
     event.preventDefault();
-    dispatch(authLogin(credential, saveSession)).then(()=>{
-        const to = location.state?.from?.pathname || '/';
-        navigate(to);
-    }).catch(error => console.log(error))
+    dispatch(authLogin(credential, saveSession))
   };
 
   const handleChange = event => {
