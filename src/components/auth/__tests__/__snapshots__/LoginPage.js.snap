@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginPage snapshot 1`] = `
+<div>
+  <div
+    class="global-container"
+  >
+    <div
+      class="card login-form"
+    >
+      <div
+        class="card-body"
+      >
+        <h1
+          class="card-title text-center"
+        >
+          New User Register
+        </h1>
+        <div
+          class="card-text"
+        >
+          <form
+            id="createUser"
+          >
+            <p>
+              <label>
+                Email
+                <br />
+                <input
+                  id="email"
+                  name="email"
+                  required=""
+                  type="email"
+                  value=""
+                />
+              </label>
+            </p>
+            <p>
+              <label>
+                Password
+                <br />
+                <input
+                  id="password"
+                  name="password"
+                  required=""
+                  type="password"
+                  value=""
+                />
+              </label>
+            </p>
+            <button
+              class="btnDisabled"
+              disabled=""
+              type="submit"
+            >
+              Sign in
+            </button>
+            <p>
+              <input
+                type="checkbox"
+              />
+               you want to save the session
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

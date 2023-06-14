@@ -47,7 +47,7 @@ function LoginPage() {
           <div className="card-text">
             <form id="createUser" onSubmit={handleSubmit}>
               <p>
-                <label>Email</label>
+                <label>Email
                 <br />
                 <input
                   type="email"
@@ -57,9 +57,10 @@ function LoginPage() {
                   onChange={handleChange}
                   value={credential.email}
                 />
+                </label>
               </p>
               <p>
-                <label>Password</label>
+                <label>Password
                 <br />
                 <input
                   type="password"
@@ -69,6 +70,7 @@ function LoginPage() {
                   onChange={handleChange}
                   value={credential.password}
                 />
+                </label>
               </p>
               <button
                 type="submit"
