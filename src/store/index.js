@@ -1,8 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk';
-import * as auth from '../components/auth/service';
-import * as adverts from '../components/adverts/service';
+import * as auth from '../api/auth';
+import * as adverts from '../api/adverts';
 
 import * as reducers from './reducers';
 import * as actionCreators from './actions';
@@ -20,22 +20,26 @@ const composeEnhancers = composeWithDevTools({
 //     return next(action)
 // }
 
-const failureRedirects = (router,redirectsMap) => store => next => action => {
+const failureRedirects = (router, redirectsMap) => store => next => action => {
   const result = next(action);
 
   if (action.error) {
-    const redirect = redirectsMap[action.payload.status]
-    if (redirect){
-        router.navigate(redirect);
+    const redirect = redirectsMap[action.payload.status];
+    if (redirect) {
+      router.navigate(redirect);
     }
   }
   return result;
 };
 
+
+
+
 export default function configureStore(preloadedState, { router }) {
   const middleware = [
     thunk.withExtraArgument({ service: { auth, adverts }, router }),
-    failureRedirects(router,{401:'/login',404:'/404'}),
+    failureRedirects(router, { 401: '/login', 404: '/404' }),
+   
   ];
   const store = createStore(
     reducer,

@@ -1,5 +1,6 @@
 //import { getAdvertsList, getTags } from '../components/adverts/service';
 
+import { getMe } from '../api/client';
 import {
   areAdvertsLoaded,
   areTagsLoaded,
@@ -61,9 +62,25 @@ export const authLogin =
     }
   };
 
-export const authLogout = () => ({
-  type: AUTH_LOGOUT,
-});
+export const authLogout = () => async(dispatch, _getState,{ service, router}) =>{
+    await service.auth.logout()
+    dispatch(authLogoutSucces())
+    router.navigate('/login');
+};
+
+export const authLogoutSucces = () => ({
+    type: AUTH_LOGOUT,
+  });
+
+export const meLoad =()=> async(dispatch, _getState,{ service, router}) =>{
+    try {
+        const me = await getMe();   
+    } catch (error) {
+        dispatch(authLogoutSucces())
+    }
+    
+};
+  
 
 export const advertsLoadedRequest = () => ({
   type: ADVERTS_LOADED_REQUEST,
@@ -90,7 +107,7 @@ export const advertsLoaded =
     }
 
     dispatch(advertsLoadedRequest());
-    console.log(service)
+    
     try {
       const adverts = await service.adverts.getAdvertsList();
   

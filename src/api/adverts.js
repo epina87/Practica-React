@@ -1,4 +1,4 @@
-import client from '../../api/client';
+import client from './client';
 
 const advertsUrl = '/api/v1/adverts';
 
@@ -25,8 +25,7 @@ export const deleteAdvert = advertId => {
   return client.delete(url);
 };
 
-export const getMe =()=>{
-    
-    const url = "/api/auth/me"
-    return client.get(url)
-}
+export const getMe = () => {
+  const url = '/api/auth/me';
+  return client.get(url);
+};

@@ -1,10 +1,10 @@
-import { logout } from '../auth/service';
+//import { logout } from '../auth/service';
 import './style/Header.css';
 import './style/Button.css';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { getMe } from '../adverts/service';
+import { Link, NavLink } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { authLogout } from '../../store/actions';
+import { authLogout, meLoad } from '../../store/actions';
 import { getIsLogged } from '../../store/selectors';
 
 const Header = () => {
@@ -14,32 +14,19 @@ const Header = () => {
   const onLogout = () => dispatch(authLogout());
 
 
-  const navigate = useNavigate();
-  const handleLogoutClick = async () => {
-    await logout();
-    onLogout();
-  };
 
-  const itsMe = async () => {
-    try {
-      await getMe();
-    } catch (error) {
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    }
-  };
-  itsMe();
+  const itsMe = () => dispatch(meLoad())
+  itsMe()
 
-  if (!isLogged){
-    navigate('/login');
+
+
+  if (!isLogged) {
+    dispatch(authLogout())
   }
 
   const goLogin = () => {
-    navigate('/login');
+    dispatch(authLogout())
   };
-
-
 
   return (
     <header>
@@ -63,7 +50,7 @@ const Header = () => {
       </nav>
       <div>
         {isLogged ? (
-          <button className="btn" onClick={handleLogoutClick}>
+          <button className="btn" onClick={onLogout}>
             Logout
           </button>
         ) : (
