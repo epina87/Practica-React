@@ -11,17 +11,6 @@ export const getIsTags = state => state.tags.data;
 export const getAdvert = advertId => state =>
   state.adverts.data.find(advert => advert.id === advertId);
 
-// export const getAdvert =  advertId => state => {
-
-//     console.log(state)
-    // const advert = getIsAdverts(state)
-    // console.log('selectors 1',advert)
-    // advert.find(advert => advert.id === advertId)
-
-    // console.log('selectors 2',advert)
-
-// }
-
 export const getAdvertsNotDelete = advertId => state =>
   state.adverts.data.filter(advert => advert.id !== advertId);
 
